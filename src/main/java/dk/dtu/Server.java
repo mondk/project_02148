@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
-import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.SequentialSpace;
 import org.jspace.SpaceRepository;
@@ -42,22 +40,11 @@ public class Server {
 			String gateUri = "tcp://" + myUri.getHost() + ":" + myUri.getPort() +  "?keep" ;
 			System.out.println("Opening repository gate at " + gateUri + "...");
 			repository.addGate(gateUri);
-			chat.put("read");
+
 			// Keep reading chat messages and printing them 
-			ArrayList<String> clients = new ArrayList<>();
 			while (true) {
-				Object[] n = chat.getp(new FormalField(String.class));
-				if(n!=null) {
-					clients.add( (String)n[0] );
-				}
-				//chat.get(new ActualField("read"));
 				Object[] t = chat.get(new FormalField(String.class), new FormalField(String.class));
 				System.out.println(t[0] + ": " + t[1]);
-				for(String s:clients) {
-					chat.put(t[0],t[1],s);
-				}
-				
-				//chat.put("read");
 			}
 
 		} catch (InterruptedException e) {
@@ -70,4 +57,5 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
+}
 }
